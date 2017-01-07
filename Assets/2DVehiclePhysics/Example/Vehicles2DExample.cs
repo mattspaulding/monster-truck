@@ -12,7 +12,7 @@ public class Vehicles2DExample : MonoBehaviour
 
 	void Start ()
 	{
-        SetControls(1);
+        SetControls(0);
 	}
 	
 	
@@ -27,7 +27,7 @@ public class Vehicles2DExample : MonoBehaviour
     void OnGUI()
     {
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Sportcar"))
+        if (GUILayout.Button("Motorbike"))
         {
             SetControls(0);
         }

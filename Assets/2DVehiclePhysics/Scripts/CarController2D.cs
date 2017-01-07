@@ -5,8 +5,9 @@ using System.Collections;
 public class AngularControlData
 {
     public bool AlwaysControl; //Set false to disable angular control when vehicle on the ground
-    public float AngularVelocityForce = 80;
-    public bool DeadZone; //Set true if it neccessary to check when the car is flipped
+	public float AngularVelocityForce = 80;
+	public float AngularVelocityInput = 30;
+	  public bool DeadZone; //Set true if it neccessary to check when the car is flipped
     public Vector2 DeadZoneAngle = new Vector2(90, 270);
     public float TimeToDeath = 3;
 }
@@ -353,9 +354,9 @@ public class CarController2D : MonoBehaviour
 
         float angVelocity = GetComponent<Rigidbody2D>().angularVelocity;
         if (angVelocity > -AngularControlSettings.AngularVelocityForce && input > 0)
-            GetComponent<Rigidbody2D>().angularVelocity += -input * 30;
+			GetComponent<Rigidbody2D>().angularVelocity += -input * AngularControlSettings.AngularVelocityInput;
         if (angVelocity < AngularControlSettings.AngularVelocityForce && input < 0)
-            GetComponent<Rigidbody2D>().angularVelocity += -input * 30;
+			GetComponent<Rigidbody2D>().angularVelocity += -input * AngularControlSettings.AngularVelocityInput;
     }
 
     void LimitVelocity()
