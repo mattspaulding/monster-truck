@@ -12,7 +12,7 @@ public class Vehicles2DExample : MonoBehaviour
 
 	void Start ()
 	{
-        SetControls(0);
+        SetControls(1);
 	}
 	
 	
