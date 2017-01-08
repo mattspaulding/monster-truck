@@ -249,6 +249,7 @@ public class CarController2D : MonoBehaviour
         LimitVelocity();
     }
 
+
     void OnCollisionStay2D(Collision2D col)
     {
         if (col.collider == FrontWheelObj.GetComponent<CircleCollider2D>() || col.collider == BackWheelObj.GetComponent<CircleCollider2D>())
