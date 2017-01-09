@@ -17,17 +17,17 @@ public class CharacterSelect : MonoBehaviour {
 
 
 		#region UserInput
-		float vertical = Input.GetAxis("Vertical"); //Forward & Backward drive input
+		//float vertical = Input.GetAxis("Vertical"); //Forward & Backward drive input
 		float horizontal = Input.GetAxis("Horizontal"); //Angular velocity control input
 		float space = Input.GetAxis("Jump"); //break control input
 		#endregion
 
 		if (isReadyToSelect) {
-			if (horizontal > 0) {
+			if (horizontal > 0 && characterIndex<1) {
 				characterIndex++;
 				isReadyToSelect = false;
 			}
-			if (horizontal < 0) {
+			if (horizontal < 0 &&characterIndex>0) {
 				characterIndex--;
 				isReadyToSelect = false;
 			}
@@ -38,9 +38,7 @@ public class CharacterSelect : MonoBehaviour {
 		}
 
 		if (space > 0) {
-
-				GlobalControl.Instance.CharacterIndex = characterIndex;
-
+			GlobalControl.Instance.CharacterIndex = characterIndex;
 			Application.LoadLevel ("Game/Level2");
 		}
 
@@ -48,10 +46,5 @@ public class CharacterSelect : MonoBehaviour {
 			Camera.main.transform.position, 
 			new Vector3(characterIndex*20, Camera.main.transform.position.y, -10), 
 			Time.deltaTime * 5);
-
-
-
 	}
-
-
 }
