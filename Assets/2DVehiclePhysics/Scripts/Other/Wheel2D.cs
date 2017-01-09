@@ -23,28 +23,26 @@ public class Wheel2D : MonoBehaviour
     }
 
 	void OnCollisionStay2D(Collision2D col)
-    {
-        if (col.collider == CarController.GetComponent<PolygonCollider2D>())
-            return;
+	{
+		if (col.collider == CarController.GetComponent<PolygonCollider2D> ())
+			return;
+		if (col.gameObject.tag == "ground") {
+			if (WheelType == WheelTyp.FrontWheel) {
+				CarController.GetComponent<CarController2D> ().FrontWheel.IsGrounded = true;
+				Vector2 forceTo = Quaternion.Euler (0, 0, -90) * col.contacts [0].normal.normalized;
+				CarController.GetComponent<CarController2D> ().FrontWheel.VectorForce = forceTo;
 
-        if (WheelType == WheelTyp.FrontWheel)
-        {
-            CarController.GetComponent<CarController2D>().FrontWheel.IsGrounded = true;
-            Vector2 forceTo = Quaternion.Euler(0, 0, -90)*col.contacts[0].normal.normalized;
-            CarController.GetComponent<CarController2D>().FrontWheel.VectorForce = forceTo;
-
-            //Debug.DrawRay(col.contacts[0].point, Quaternion.Euler(0, 0, -90) * col.contacts[0].normal, Color.green, 1);  //Draw wheel force direction line
+				//Debug.DrawRay(col.contacts[0].point, Quaternion.Euler(0, 0, -90) * col.contacts[0].normal, Color.green, 1);  //Draw wheel force direction line
             
-        }
-        else
-        {
-            CarController.GetComponent<CarController2D>().BackWheel.IsGrounded = true;
-            Vector2 forceTo = Quaternion.Euler(0, 0, -90) * col.contacts[0].normal.normalized;
-            CarController.GetComponent<CarController2D>().BackWheel.VectorForce = forceTo;
+			} else {
+				CarController.GetComponent<CarController2D> ().BackWheel.IsGrounded = true;
+				Vector2 forceTo = Quaternion.Euler (0, 0, -90) * col.contacts [0].normal.normalized;
+				CarController.GetComponent<CarController2D> ().BackWheel.VectorForce = forceTo;
 
-            //Debug.DrawRay(col.contacts[0].point, Quaternion.Euler(0, 0, -90) * col.contacts[0].normal, Color.green, 1); //Draw wheel force direction line
-        }
-    }
+				//Debug.DrawRay(col.contacts[0].point, Quaternion.Euler(0, 0, -90) * col.contacts[0].normal, Color.green, 1); //Draw wheel force direction line
+			}
+		}
+	}
 
     void OnCollisionExit2D(Collision2D col)
     {

@@ -213,8 +213,8 @@ public class CarController2D : MonoBehaviour
         }
         else
         {
-            FrontWheel.WheelObj.GetComponent<Rigidbody2D>().mass = FrontWheel.DefaultMass;
-            BackWheel.WheelObj.GetComponent<Rigidbody2D>().mass = BackWheel.DefaultMass;
+           // FrontWheel.WheelObj.GetComponent<Rigidbody2D>().mass = FrontWheel.DefaultMass;
+           // BackWheel.WheelObj.GetComponent<Rigidbody2D>().mass = BackWheel.DefaultMass;
         }
         #endregion
 
@@ -257,7 +257,9 @@ public class CarController2D : MonoBehaviour
             return;
         }
             
-        IsGrounded = true;
+		if (col.gameObject.tag == "ground") {
+			IsGrounded = true;
+		}
     }
 
     void OnCollisionExit2D(Collision2D col)
@@ -336,7 +338,7 @@ public class CarController2D : MonoBehaviour
         if (wheel.IsGrounded)
         {
             rb.AddForce(-rb.velocity * BrakingForce);
-            rb.mass = Mathf.Lerp(rb.mass, (GetComponent<Rigidbody2D>().mass * 0.5f), Time.deltaTime * BrakingForce);
+            //rb.mass = Mathf.Lerp(rb.mass, (GetComponent<Rigidbody2D>().mass * 0.5f), Time.deltaTime * BrakingForce);
         }
 
         rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, 0, Time.deltaTime * (BrakingForce * 0.25f));
