@@ -4,7 +4,7 @@ using System.Collections;
 public class Game : MonoBehaviour
 {
 
-    public GameObject[] Vehicles;
+//    public GameObject[] Vehicles;
 
     private GameObject _currentVehicle;
 
@@ -12,8 +12,20 @@ public class Game : MonoBehaviour
 
 	void Start ()
 	{
-		_currentVehicle = GameObject.Instantiate((GameObject)Resources.Load("Truck"));
+		var characterIndex = GlobalControl.Instance.CharacterIndex;
+		switch (characterIndex) {
+		case 0:
+			_currentVehicle = GameObject.Instantiate ((GameObject)Resources.Load ("Truck"));
+			break;
+		case 1:
+			_currentVehicle = GameObject.Instantiate ((GameObject)Resources.Load ("Motorbike"));
+			break;
+		default:
+			_currentVehicle = GameObject.Instantiate ((GameObject)Resources.Load ("Truck"));
+			break;
+
 		}
+			}
 	
 	
 	void FixedUpdate () 
