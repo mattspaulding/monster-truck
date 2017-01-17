@@ -59,6 +59,9 @@ public class CarController2D : MonoBehaviour
     
     void ConfigureWheels()
     {
+		FrontWheelObj.gameObject.tag = "Player";
+		BackWheelObj.gameObject.tag = "Player";
+
         FrontWheel.WheelObj = FrontWheelObj.gameObject;
         BackWheel.WheelObj = BackWheelObj.gameObject;
 
