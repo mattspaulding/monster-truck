@@ -25,6 +25,8 @@ public class CarController2D : MonoBehaviour
     public float DamperSize = 0.1f;
     public float DamperStiffness = 6;
 
+	public int Direction = 1;
+
     public float Acceleration = 100;
     public float MaxSpeed = 30;
     public float BrakingForce = 20;
@@ -51,6 +53,9 @@ public class CarController2D : MonoBehaviour
     public Wheel BackWheel = new Wheel();
 
     private float _deathTimer;
+
+	private float prevControl;
+
 
     void Awake()
     {
@@ -143,19 +148,35 @@ public class CarController2D : MonoBehaviour
         #region UserInput
         float vertical = Input.GetAxis("Vertical"); //Forward & Backward drive input
         float horizontal = Input.GetAxis("Horizontal"); //Angular velocity control input
-        float space = Input.GetAxis("Jump"); //break control input
-        #endregion
+		float space = Input.GetAxis("Jump"); //break control input
+		float control = Input.GetAxis("Fire1"); //turn
+		       #endregion
 
-        if (vertical > 0)
-            CurrentEngineAcceleration = Acceleration * vertical;
-        else CurrentEngineAcceleration = (Acceleration * vertical) * BackwardAccelerationFactor;
+			if (control > 0 && prevControl==0) {
+			Direction = -Direction;
 
+			var tempFrontPos = FrontWheelObj.transform.localPosition;
+			FrontWheelObj.transform.localPosition = BackWheelObj.transform.localPosition;
+			BackWheelObj.transform.localPosition = tempFrontPos;
+
+				}
+		prevControl = control;
+
+		transform.localScale = new Vector3 (Direction, 1, 1);
+
+
+
+		if (vertical > 0 )
+			CurrentEngineAcceleration = Acceleration * vertical*Direction;
+		else
+			CurrentEngineAcceleration = Acceleration * vertical*Direction* BackwardAccelerationFactor;
+		
         #region AWD
         if (DriveType == DriveTyp.AllWheelDrive)
         {
             if (FrontWheel.IsGrounded)
             {
-                AddWheelForce(FrontWheel, FrontWheel.VectorForce, vertical);
+                AddWheelForce(FrontWheel, FrontWheel.VectorForce, vertical*Direction);
                 FrontWheel.WheelStoredForce = Mathf.Lerp(FrontWheel.WheelStoredForce, 0, Time.deltaTime * GetComponent<Rigidbody2D>().velocity.magnitude);
             }
             else
@@ -165,7 +186,7 @@ public class CarController2D : MonoBehaviour
 
             if (BackWheel.IsGrounded)
             {
-                AddWheelForce(BackWheel, BackWheel.VectorForce, vertical);
+				AddWheelForce(BackWheel, BackWheel.VectorForce, vertical*Direction);
                 BackWheel.WheelStoredForce = Mathf.Lerp(FrontWheel.WheelStoredForce, 0, Time.deltaTime * GetComponent<Rigidbody2D>().velocity.magnitude);
             }
             else
@@ -173,8 +194,8 @@ public class CarController2D : MonoBehaviour
                 BackWheel.WheelStoredForce = BackWheel.CurWheelTorque * 2;
             }
 
-            AddWheelTorque(FrontWheel, vertical);
-            AddWheelTorque(BackWheel, vertical);
+			AddWheelTorque(FrontWheel, vertical*Direction);
+			AddWheelTorque(BackWheel, vertical*Direction);
         }
         #endregion
         #region BWD
@@ -182,14 +203,14 @@ public class CarController2D : MonoBehaviour
         {
             if (BackWheel.IsGrounded)
             {
-                AddWheelForce(BackWheel, BackWheel.VectorForce, vertical);
+				AddWheelForce(BackWheel, BackWheel.VectorForce, vertical*Direction);
             }
             else
             {
                 BackWheel.WheelStoredForce = BackWheel.CurWheelTorque;
             }
 
-            AddWheelTorque(BackWheel, vertical);
+			AddWheelTorque(BackWheel, vertical*Direction);
         }
         #endregion
         #region FWD
@@ -197,14 +218,14 @@ public class CarController2D : MonoBehaviour
         {
             if (FrontWheel.IsGrounded)
             {
-                AddWheelForce(FrontWheel, FrontWheel.VectorForce, vertical);
+				AddWheelForce(FrontWheel, FrontWheel.VectorForce, vertical*Direction);
             }
             else
             {
                 FrontWheel.WheelStoredForce = FrontWheel.CurWheelTorque;
             }
 
-            AddWheelTorque(FrontWheel, vertical);
+			AddWheelTorque(FrontWheel, vertical*Direction);
         }
         #endregion
 
@@ -303,6 +324,15 @@ public class CarController2D : MonoBehaviour
         }
     }
 
+	IEnumerator SwitchWheels(){
+		FrontWheelObj.gameObject.SetActive(false);
+		BackWheelObj.gameObject.SetActive(false);
+		yield return new WaitForSeconds(.1f);
+		FrontWheelObj.gameObject.SetActive(true);
+		BackWheelObj.gameObject.SetActive(true);
+
+	}
+
     void AddWheelForce(Wheel wheel, Vector2 forceTo, float input)
     {
         if (AutoBrake)
@@ -324,9 +354,9 @@ public class CarController2D : MonoBehaviour
         }
 
         float curMaxSpeed = MaxSpeed;
-        if (input < 0)
-            curMaxSpeed *= BackwardMaxSpeedFactor;
-
+		if (input*Direction < 0)
+			curMaxSpeed *= BackwardMaxSpeedFactor;
+		
         if (Mathf.Abs(wheel.WheelObj.GetComponent<Rigidbody2D>().velocity.magnitude) < curMaxSpeed)
         {
             wheel.WheelObj.GetComponent<Rigidbody2D>().AddForce(forceTo * (CurrentEngineAcceleration + wheel.WheelStoredForce));
