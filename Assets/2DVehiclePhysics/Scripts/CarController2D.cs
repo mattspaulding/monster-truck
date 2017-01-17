@@ -316,7 +316,7 @@ public class CarController2D : MonoBehaviour
 
         if (Mathf.Abs(wheel.CurWheelTorque) <= MaxSpeed * 2)
         {
-            wheel.WheelObj.GetComponent<Rigidbody2D>().AddTorque(-CurrentEngineAcceleration * 0.15f);
+            wheel.WheelObj.GetComponent<Rigidbody2D>().AddTorque(-CurrentEngineAcceleration*2 );
         }
         else
         {
@@ -324,14 +324,6 @@ public class CarController2D : MonoBehaviour
         }
     }
 
-	IEnumerator SwitchWheels(){
-		FrontWheelObj.gameObject.SetActive(false);
-		BackWheelObj.gameObject.SetActive(false);
-		yield return new WaitForSeconds(.1f);
-		FrontWheelObj.gameObject.SetActive(true);
-		BackWheelObj.gameObject.SetActive(true);
-
-	}
 
     void AddWheelForce(Wheel wheel, Vector2 forceTo, float input)
     {
