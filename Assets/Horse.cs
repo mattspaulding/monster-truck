@@ -14,11 +14,12 @@ public class Horse : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		transform.localRotation = new Quaternion ();
 	}
 
 	void FixedUpdate() 
 	{
-		rb.AddForce(transform.right * thrust);
+		rb.AddForce(new Vector3(1f,0f) * thrust);
+
 	}
 }
