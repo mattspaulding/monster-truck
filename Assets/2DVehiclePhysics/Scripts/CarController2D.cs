@@ -156,13 +156,20 @@ public class CarController2D : MonoBehaviour
 		float horizontal = Input.GetAxis ("Horizontal"); //Angular velocity control input
 		float space = Input.GetAxis ("Jump"); //break control input
 		float control = Input.GetAxis ("Fire1"); //turn
+		float fire3 = Input.GetAxis ("Fire3"); //turn
 		#endregion
 
+		if (fire3 > 0) {
+			this.GetComponent<Rigidbody2D> ().AddForce (gameObject.transform.right * 200 * Direction);
+			this.transform.Find ("Nitro").gameObject.active = true;
+		} else {
+			this.transform.Find ("Nitro").gameObject.active = false;
+		}
 		if (control > 0 && prevControl == 0) {
 			Direction = -Direction;
-		
+
 		}
-		prevControl = control;
+			prevControl = control;
 
 		transform.localScale = new Vector3 (Direction, 1, 1);
 
