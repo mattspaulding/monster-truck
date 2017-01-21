@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Game : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Game : MonoBehaviour
     private GameObject _currentVehicle;
 
     private bool _showInfo = true;
+
+	private float timer=5;
 
 	void Start ()
 	{
@@ -24,6 +27,7 @@ public class Game : MonoBehaviour
 			_currentVehicle = GameObject.Instantiate ((GameObject)Resources.Load ("Truck"));
 			break;
 
+
 		}
 			}
 	
@@ -34,6 +38,11 @@ public class Game : MonoBehaviour
         {
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(_currentVehicle.transform.position.x, _currentVehicle.transform.position.y, -10), Time.deltaTime * 15);
         }
+		if (timer > 0) {
+			timer -= Time.deltaTime;
+		} else {
+			GameObject.FindWithTag("Player").GetComponent<CarController2D>().enabled = true;
+		}
 	}
 
     void OnGUI()
@@ -51,7 +60,7 @@ public class Game : MonoBehaviour
 //        {
 //            SetControls(2);
 //        }
-        GUILayout.Label("[W/S] - Move forward/backward; [A/D] - Angular control; [Space] - Break");
+		GUILayout.Label("[W/S] - Move forward/backward; [A/D] - Angular control; [Space] - Break; [control] - turn; [shift] - nitro");
         
         GUILayout.EndHorizontal();
         _showInfo = GUILayout.Toggle(_showInfo, "Info");
@@ -65,7 +74,14 @@ public class Game : MonoBehaviour
 			GUILayout.Label("Front Wheel Grounded: " + _currentVehicle.GetComponent<CarController2D>().FrontWheel.IsGrounded.ToString());
 				GUILayout.Label("Back Wheel Grounded: " + _currentVehicle.GetComponent<CarController2D>().BackWheel.IsGrounded.ToString());
 				    }
-        
+
+		var fontStyle = new GUIStyle ();
+		fontStyle.fontSize = 40;
+		fontStyle.normal.textColor = Color.white;
+		if (timer > 0) {
+			GUI.Label (new Rect (370, 120, 100, 20), Math.Ceiling (timer).ToString (), fontStyle);
+		}
+
     }
 
 //    void SetControls(int id)
