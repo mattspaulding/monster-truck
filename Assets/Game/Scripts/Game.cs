@@ -12,6 +12,12 @@ public class Game : MonoBehaviour
     private bool _showInfo = true;
 
 	private float timer=5;
+	private float finishTimer=5;
+
+	public bool finish = false;
+
+	public string nextLevel;
+
 
 	void Start ()
 	{
@@ -34,7 +40,7 @@ public class Game : MonoBehaviour
 	
 	void FixedUpdate () 
     {
-        if (_currentVehicle != null)
+	      if (_currentVehicle != null)
         {
             Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(_currentVehicle.transform.position.x, _currentVehicle.transform.position.y, -10), Time.deltaTime * 15);
         }
@@ -43,6 +49,16 @@ public class Game : MonoBehaviour
 		} else {
 			GameObject.FindWithTag("Player").GetComponent<CarController2D>().enabled = true;
 		}
+
+		if (finish) {
+			GameObject.FindWithTag("Player").GetComponent<CarController2D>().enabled = false;
+			if (finishTimer > 0) {
+				finishTimer -= Time.deltaTime;
+			} else {
+						Application.LoadLevel ("Game/"+nextLevel);
+					}
+		}
+
 	}
 
     void OnGUI()

@@ -39,7 +39,7 @@ public class CharacterSelect : MonoBehaviour {
 
 		if (vertical > 0) {
 			GlobalControl.Instance.CharacterIndex = characterIndex;
-			Application.LoadLevel ("Game/Level3");
+			Application.LoadLevel ("Game/Level4");
 		}
 
 		Camera.main.transform.position = Vector3.Lerp(
