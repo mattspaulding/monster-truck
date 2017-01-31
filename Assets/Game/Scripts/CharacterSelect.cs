@@ -7,6 +7,8 @@ public class CharacterSelect : MonoBehaviour {
 	public bool isReadyToSelect = true;
 	public int characterIndex = 0;
 
+	private float prevSpace=1;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -37,10 +39,11 @@ public class CharacterSelect : MonoBehaviour {
 			isReadyToSelect = true;
 		}
 
-		if (vertical > 0) {
+		if (space > 0 && prevSpace==0) {
 			GlobalControl.Instance.CharacterIndex = characterIndex;
 			Application.LoadLevel ("Game/Level4");
 		}
+		prevSpace = space;
 
 		Camera.main.transform.position = Vector3.Lerp(
 			Camera.main.transform.position, 
