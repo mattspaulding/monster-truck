@@ -14,8 +14,9 @@ public class Game : MonoBehaviour
 	private float timer = 5;
 	private float finishTimer = 5;
 
+	[HideInInspector]
 	public bool finish = false;
-
+	[HideInInspector]
 	public string nextLevel;
 
 

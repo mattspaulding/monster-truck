@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class finish : MonoBehaviour {
 
+	public string nextLevel;
 
 
 	// Use this for initialization
@@ -21,6 +22,7 @@ public class finish : MonoBehaviour {
 	{
 		if (col.gameObject.tag == "Player") {
 			GameObject.Find("Game").GetComponent<Game>().finish = true;
-		}
+			GameObject.Find("Game").GetComponent<Game>().nextLevel = this.nextLevel;
+				}
 	}
 }
