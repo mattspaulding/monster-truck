@@ -41,7 +41,7 @@ public class CharacterSelect : MonoBehaviour {
 
 		if (space > 0 && prevSpace==0) {
 			GlobalControl.Instance.CharacterIndex = characterIndex;
-			Application.LoadLevel ("Game/Level4");
+			Application.LoadLevel ("Game/World1");
 		}
 		prevSpace = space;
 
