@@ -11,8 +11,8 @@ public class Game : MonoBehaviour
 
 	private bool _showInfo = true;
 
-	private float timer = 5;
-	private float finishTimer = 5;
+	public float startTimer = 5;
+	public float finishTimer = 5;
 
 	[HideInInspector]
 	public bool finish = false;
@@ -45,8 +45,8 @@ public class Game : MonoBehaviour
 		if (_currentVehicle != null) {
 			Camera.main.transform.position = Vector3.Lerp (Camera.main.transform.position, new Vector3 (_currentVehicle.transform.position.x, _currentVehicle.transform.position.y, -10), Time.deltaTime * 15);
 		}
-		if (timer > 0) {
-			timer -= Time.deltaTime;
+		if (startTimer > 0) {
+			startTimer -= Time.deltaTime;
 		} else {
 			GameObject.FindWithTag ("Player").GetComponent<CarController2D> ().enabled = true;
 			Time.timeScale = 2f;
@@ -97,8 +97,8 @@ public class Game : MonoBehaviour
 		var fontStyle = new GUIStyle ();
 		fontStyle.fontSize = 40;
 		fontStyle.normal.textColor = Color.white;
-		if (timer > 0) {
-			GUI.Label (new Rect (370, 120, 100, 20), Math.Ceiling (timer).ToString (), fontStyle);
+		if (startTimer > 0) {
+			GUI.Label (new Rect (370, 120, 100, 20), Math.Ceiling (startTimer).ToString (), fontStyle);
 		}
 
 	}
