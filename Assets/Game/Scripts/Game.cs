@@ -54,7 +54,7 @@ public class Game : MonoBehaviour
 
 		if (finish) {
 			GameObject.FindWithTag ("Player").GetComponent<CarController2D> ().enabled = false;
-			Time.timeScale = 1f;
+			Time.timeScale = 0.5f;
 			if (finishTimer > 0) {
 				finishTimer -= Time.deltaTime;
 			} else {
