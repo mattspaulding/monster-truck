@@ -5,14 +5,14 @@ using System;
 public class Game : MonoBehaviour
 {
 
-//    public GameObject[] Vehicles;
+	//    public GameObject[] Vehicles;
 
-    private GameObject _currentVehicle;
+	private GameObject _currentVehicle;
 
-    private bool _showInfo = true;
+	private bool _showInfo = true;
 
-	private float timer=5;
-	private float finishTimer=5;
+	private float timer = 5;
+	private float finishTimer = 5;
 
 	public bool finish = false;
 
@@ -21,6 +21,7 @@ public class Game : MonoBehaviour
 
 	void Start ()
 	{
+
 		var characterIndex = GlobalControl.Instance.CharacterIndex;
 		switch (characterIndex) {
 		case 0:
@@ -35,35 +36,37 @@ public class Game : MonoBehaviour
 
 
 		}
-			}
+	}
+
 	
-	
-	void FixedUpdate () 
-    {
-	      if (_currentVehicle != null)
-        {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(_currentVehicle.transform.position.x, _currentVehicle.transform.position.y, -10), Time.deltaTime * 15);
-        }
+	void FixedUpdate ()
+	{
+		if (_currentVehicle != null) {
+			Camera.main.transform.position = Vector3.Lerp (Camera.main.transform.position, new Vector3 (_currentVehicle.transform.position.x, _currentVehicle.transform.position.y, -10), Time.deltaTime * 15);
+		}
 		if (timer > 0) {
 			timer -= Time.deltaTime;
 		} else {
-			GameObject.FindWithTag("Player").GetComponent<CarController2D>().enabled = true;
+			GameObject.FindWithTag ("Player").GetComponent<CarController2D> ().enabled = true;
+			Time.timeScale = 2f;
 		}
 
 		if (finish) {
-			GameObject.FindWithTag("Player").GetComponent<CarController2D>().enabled = false;
+			GameObject.FindWithTag ("Player").GetComponent<CarController2D> ().enabled = false;
+			Time.timeScale = 1f;
 			if (finishTimer > 0) {
 				finishTimer -= Time.deltaTime;
 			} else {
-						Application.LoadLevel ("Game/"+nextLevel);
-					}
+				Application.LoadLevel ("Game/" + nextLevel);
+				Time.timeScale = 1f;
+			}
 		}
 
 	}
 
-    void OnGUI()
-    {
-        GUILayout.BeginHorizontal();
+	void OnGUI ()
+	{
+		GUILayout.BeginHorizontal ();
 //        if (GUILayout.Button("Motorbike"))
 //        {
 //            SetControls(0);
@@ -76,20 +79,19 @@ public class Game : MonoBehaviour
 //        {
 //            SetControls(2);
 //        }
-		GUILayout.Label("[W/S] - Move forward/backward; [A/D] - Angular control; [Space] - Break; [control] - turn; [shift] - nitro");
+		GUILayout.Label ("[W/S] - Move forward/backward; [A/D] - Angular control; [Space] - Break; [control] - turn; [shift] - nitro");
         
-        GUILayout.EndHorizontal();
-        _showInfo = GUILayout.Toggle(_showInfo, "Info");
-        if (_currentVehicle !=null && _showInfo)
-        {
-            GUILayout.Label("Drive type: " + _currentVehicle.GetComponent<CarController2D>().DriveType.ToString());
-            GUILayout.Label("Acceleration: " +  _currentVehicle.GetComponent<CarController2D>().Acceleration.ToString());
-            GUILayout.Label("Max. speed: " + _currentVehicle.GetComponent<CarController2D>().MaxSpeed.ToString());
-			GUILayout.Label("Braking force: " + _currentVehicle.GetComponent<CarController2D>().BrakingForce.ToString());
-			GUILayout.Label("Grounded: " + _currentVehicle.GetComponent<CarController2D>().IsGrounded.ToString());
-			GUILayout.Label("Front Wheel Grounded: " + _currentVehicle.GetComponent<CarController2D>().FrontWheel.IsGrounded.ToString());
-				GUILayout.Label("Back Wheel Grounded: " + _currentVehicle.GetComponent<CarController2D>().BackWheel.IsGrounded.ToString());
-				    }
+		GUILayout.EndHorizontal ();
+		_showInfo = GUILayout.Toggle (_showInfo, "Info");
+		if (_currentVehicle != null && _showInfo) {
+			GUILayout.Label ("Drive type: " + _currentVehicle.GetComponent<CarController2D> ().DriveType.ToString ());
+			GUILayout.Label ("Acceleration: " + _currentVehicle.GetComponent<CarController2D> ().Acceleration.ToString ());
+			GUILayout.Label ("Max. speed: " + _currentVehicle.GetComponent<CarController2D> ().MaxSpeed.ToString ());
+			GUILayout.Label ("Braking force: " + _currentVehicle.GetComponent<CarController2D> ().BrakingForce.ToString ());
+			GUILayout.Label ("Grounded: " + _currentVehicle.GetComponent<CarController2D> ().IsGrounded.ToString ());
+			GUILayout.Label ("Front Wheel Grounded: " + _currentVehicle.GetComponent<CarController2D> ().FrontWheel.IsGrounded.ToString ());
+			GUILayout.Label ("Back Wheel Grounded: " + _currentVehicle.GetComponent<CarController2D> ().BackWheel.IsGrounded.ToString ());
+		}
 
 		var fontStyle = new GUIStyle ();
 		fontStyle.fontSize = 40;
@@ -98,20 +100,20 @@ public class Game : MonoBehaviour
 			GUI.Label (new Rect (370, 120, 100, 20), Math.Ceiling (timer).ToString (), fontStyle);
 		}
 
-    }
+	}
 
-//    void SetControls(int id)
-//    {
-//        for (int i = 0; i < Vehicles.Length; i++)
-//        {
-//            if (i == id)
-//            {
-//                Vehicles[i].GetComponent<CarController2D>().Enabled = true;
-//                _currentVehicle = Vehicles[i];
-//            }
-//            else Vehicles[i].GetComponent<CarController2D>().Enabled = false;
-//        }
-//    }
+	//    void SetControls(int id)
+	//    {
+	//        for (int i = 0; i < Vehicles.Length; i++)
+	//        {
+	//            if (i == id)
+	//            {
+	//                Vehicles[i].GetComponent<CarController2D>().Enabled = true;
+	//                _currentVehicle = Vehicles[i];
+	//            }
+	//            else Vehicles[i].GetComponent<CarController2D>().Enabled = false;
+	//        }
+	//    }
 
     
 }
